@@ -31,14 +31,20 @@
 BagToImage::BagToImage(const rclcpp::NodeOptions &options) :
   Node("bag_to_image", options) {
   // IO
-  input_path_ = this->declare_parameter<std::string>("input/path");
+  // input_path_ = this->declare_parameter<std::string>("input/path");
+  input_path_ = this->declare_parameter<std::string>("input/path", "");
   bag_format_ = this->declare_parameter<std::string>("input/bag_format", "cdr");
   storage_id_ = this->declare_parameter<std::string>("input/bag_storage_id", "sqlite3");
   RCLCPP_INFO_STREAM(get_logger(), "Using bag format: '" << bag_format_ << "'");
   RCLCPP_INFO_STREAM(get_logger(), "Using bag storage_id: '" << storage_id_ << "'");
 
-  input_topics_ = this->declare_parameter<std::vector<std::string>>("input/topics");
+  // input_topics_ = this->declare_parameter<std::vector<std::string>>("input/topics");
+  std::vector<std::string> dummy;
+  input_topics_ = this->declare_parameter<std::vector<std::string>>("input/topics", dummy);
   output_path_ = this->declare_parameter<std::string>("output/path", "/tmp/");
+
+  // input_topic_ = this->declare_parameter<std::string>("input/topic", "/image_raw");
+  // output_path_ = this->declare_parameter<std::string>("output/path", "/tmp/");
 
   CheckParams();
   ReadBag();
@@ -48,7 +54,7 @@ BagToImage::BagToImage(const rclcpp::NodeOptions &options) :
 }
 
 void BagToImage::ReadBag() {
-  rosbag2_storage::StorageOptions storage_options;
+  rosbag2_cpp::StorageOptions storage_options;
   rosbag2_cpp::ConverterOptions converter_options;
   storage_options.uri = input_path_;
   storage_options.storage_id = storage_id_;

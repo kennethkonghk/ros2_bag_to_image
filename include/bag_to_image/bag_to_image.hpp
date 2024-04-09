@@ -44,7 +44,7 @@
 #include "rcutils/time.h"
 #include "rosbag2_cpp/reader.hpp"
 #include "rosbag2_cpp/readers/sequential_reader.hpp"
-#include "rosbag2_storage/storage_options.hpp"
+#include "rosbag2_cpp/storage_options.hpp"
 #include "sensor_msgs/msg/compressed_image.h"
 #include "sensor_msgs/msg/image.hpp"
 
