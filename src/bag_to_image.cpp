@@ -27,6 +27,7 @@
  */
 
 #include "bag_to_image/bag_to_image.hpp"
+#include <opencv2/core/mat.hpp>
 
 BagToImage::BagToImage(const rclcpp::NodeOptions &options) :
   Node("bag_to_image", options) {
@@ -121,11 +122,13 @@ cv_bridge::CvImagePtr BagToImage::MessageToImage(std::shared_ptr<rosbag2_storage
   cv_bridge::CvImagePtr in_image_ptr;
 
   if (topic_type == "sensor_msgs/msg/Image") {
+    cv::Mat f32Mat;
     sensor_msgs::msg::Image extracted_msg;
     rclcpp::Serialization<sensor_msgs::msg::Image> serialization;
     rclcpp::SerializedMessage extracted_serialized_msg(*bag_message->serialized_data);
     serialization.deserialize_message(&extracted_serialized_msg, &extracted_msg);
     try {
+      extracted_msg.convertTo(f32Mat, CV_32FC1, 0.001)
       in_image_ptr = cv_bridge::toCvCopy(extracted_msg, sensor_msgs::image_encodings::BGR8);
     } catch (cv_bridge::Exception &e) {
       RCLCPP_ERROR(this->get_logger(), "cv_bridge exception: %s", e.what());
