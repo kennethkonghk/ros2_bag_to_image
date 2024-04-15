@@ -26,7 +26,7 @@
  *  v1.0 amc-nu 2023-08
  */
 
-#include "topic_to_image/topic_to_image.hpp"
+#include "topic_to_image.hpp"
 
 TopicToImage::TopicToImage(const rclcpp::NodeOptions & options) :
   Node("topic_to_image", options)

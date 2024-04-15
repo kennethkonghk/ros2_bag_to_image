@@ -11,7 +11,7 @@ ament_auto_find_build_dependencies()
 find_package (OpenCV REQUIRED)
 find_package (Boost REQUIRED)
 
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include/)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src/)
 
 # topic_to_image
 ament_auto_add_library(topic_to_image SHARED
