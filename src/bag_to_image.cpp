@@ -159,7 +159,7 @@ cv_bridge::CvImagePtr BagToImage::MessageToImage(
       } else if (extracted_msg.encoding == "16UC1") {
         extracted_msg.encoding = "mono16";
         in_image_ptr = cv_bridge::toCvCopy(extracted_msg,
-                                           sensor_msgs::image_encodings::MONO8);
+                                           sensor_msgs::image_encodings::MONO16);
 
       } else
         in_image_ptr = cv_bridge::toCvCopy(extracted_msg,
