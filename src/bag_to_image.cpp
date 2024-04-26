@@ -119,12 +119,41 @@ void BagToImage::ReadBag() {
       }
       target_topic_name =
           std::regex_replace(target_topic_name, std::regex("/"), "_");
-      fname =
-          output_path_ + "/" + target_topic_name + "/" + target_topic_name +
-          "_" + boost::lexical_cast<std::string>(image_msg->header.stamp.sec) +
-          "." +
-          boost::lexical_cast<std::string>(image_msg->header.stamp.nanosec) +
-          ".png";
+      // fname =
+      //     output_path_ + "/" + target_topic_name + "/" + target_topic_name +
+      //     "_" + boost::lexical_cast<std::string>(image_msg->header.stamp.sec)
+      //     +
+      //     "." +
+      //     boost::lexical_cast<std::string>(image_msg->header.stamp.nanosec) +
+      //     ".png";
+
+      // To ensure nanosec is 9-digit by filling zeros at the front
+      // checking
+      // int counter;
+      // if (target_topic_name == "pi4_2_D435_2_depth_image_rect_raw" &&
+      //     image_msg->header.stamp.sec == 1713514760) {
+      //   std::stringstream nanosec;
+      //   nanosec << std::setw(9) << std::setfill('0')
+      //      << image_msg->header.stamp.nanosec;
+      //   std::cout << "counter " << counter << " | "
+      //             << image_msg->header.stamp.sec << "." << nanosec.str()
+      //             << std::endl;
+      //   counter++;
+      // }
+      // implementation
+      std::stringstream nanosec;
+      nanosec << std::setw(9) << std::setfill('0')
+         << image_msg->header.stamp.nanosec;
+      fname = output_path_ + "/" + target_topic_name + "/" + target_topic_name +
+              "_" +
+              boost::lexical_cast<std::string>(image_msg->header.stamp.sec) +
+              "." + nanosec.str() + ".png";
+      // checking
+      // if (target_topic_name == "pi4_2_D435_2_depth_image_rect_raw" &&
+      //     image_msg->header.stamp.sec == 1713514760) {
+      //   cv::imwrite(fname, image_msg->image);
+      //   RCLCPP_INFO_STREAM(get_logger(), "Image saved to: " << fname);
+      // }
 
       cv::imwrite(fname, image_msg->image);
       RCLCPP_INFO_STREAM(get_logger(), "Image saved to: " << fname);
@@ -158,8 +187,8 @@ cv_bridge::CvImagePtr BagToImage::MessageToImage(
 
       } else if (extracted_msg.encoding == "16UC1") {
         extracted_msg.encoding = "mono16";
-        in_image_ptr = cv_bridge::toCvCopy(extracted_msg,
-                                           sensor_msgs::image_encodings::MONO16);
+        in_image_ptr = cv_bridge::toCvCopy(
+            extracted_msg, sensor_msgs::image_encodings::MONO16);
 
       } else
         in_image_ptr = cv_bridge::toCvCopy(extracted_msg,
