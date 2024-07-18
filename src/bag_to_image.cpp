@@ -63,7 +63,8 @@ BagToImage::BagToImage(const rclcpp::NodeOptions &options)
 }
 
 void BagToImage::ReadBag() {
-  rosbag2_cpp::StorageOptions storage_options;
+  // rosbag2_cpp::StorageOptions storage_options;
+  rosbag2_storage::StorageOptions storage_options;
   rosbag2_cpp::ConverterOptions converter_options;
   storage_options.uri = input_path_;
   storage_options.storage_id = storage_id_;
